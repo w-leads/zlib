@@ -129,7 +129,9 @@ z_streamp strm;
         fprintf(flog, "  - state->strm != strm : %d\n", state->strm != strm);
         fprintf(flog, "  - state->mode < HEAD  : %d\n", state->mode < HEAD);
         fprintf(flog, "  - state->mode > SYNC  : %d\n", state->mode > SYNC);
-        fprintf(flog, "  - state->mode  : %d\n", state->mode);
+        fprintf(flog, "  - state->mode         : %d\n", state->mode);
+        fprintf(flog, "  - ptr - state->strm   : %p\n", state->strm);
+        fprintf(flog, "  - ptr - strm          : %p\n", strm);
       }
       fclose(flog);
 
