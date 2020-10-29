@@ -139,9 +139,7 @@ z_streamp strm;
     }
 
     flog = fopen("/tmp/zlib.log", "a");
-    fprintf(flog, "[inflate_state] Succeeded");
-    fprintf(flog, "  - ptr - state->strm   : %p\n", state->strm);
-    fprintf(flog, "  - ptr - strm          : %p\n", strm);
+    fprintf(flog, "[inflate_state] Succeeded; %d ; %p ; %p\n", state->strm != strm, state->strm, strm);
     fclose(flog);
 
     return 0;
