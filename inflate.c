@@ -84,6 +84,7 @@
 #include "inftrees.h"
 #include "inflate.h"
 #include "inffast.h"
+#include <stdio.h>
 
 #ifdef MAKEFIXED
 #  ifndef BUILDFIXED
@@ -106,13 +107,34 @@ local int inflateStateCheck(strm)
 z_streamp strm;
 {
     struct inflate_state FAR *state;
+    FILE* flog;
     if (strm == Z_NULL ||
-        strm->zalloc == (alloc_func)0 || strm->zfree == (free_func)0)
-        return 1;
+        strm->zalloc == (alloc_func)0 || strm->zfree == (free_func)0) {
+
+      flog = fopen("/tmp/zlib.log", "a");
+      fprintf(flog, "[inflate_state] Failed in first condition");
+      fclose(flog);
+
+      return 1;
+    }
+
     state = (struct inflate_state FAR *)strm->state;
     if (state == Z_NULL || state->strm != strm ||
-        state->mode < HEAD || state->mode > SYNC)
-        return 1;
+        state->mode < HEAD || state->mode > SYNC) {
+
+      flog = fopen("/tmp/zlib.log", "a");
+      fprintf(flog, "[inflate_state] Failed in second condition");
+      fprintf(flog, "  - state == null       : %d\n", state == Z_NULL);
+      if (state != Z_NULL) {
+        fprintf(flog, "  - state->strm != strm : %d\n", state->strm != strm);
+        fprintf(flog, "  - state->mode < HEAD  : %d\n", state->mode < HEAD);
+        fprintf(flog, "  - state->mode > SYNC  : %d\n", state->mode > SYNC);
+        fprintf(flog, "  - state->mode  : %d\n", state->mode);
+      }
+      fclose(flog);
+
+      return 1;
+    }
     return 0;
 }
 
